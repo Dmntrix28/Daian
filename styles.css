@@ -1,0 +1,120 @@
+:root {
+  color-scheme: dark;
+  font-family: "Poppins", "Segoe UI", sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: radial-gradient(circle at top, #1b1b2f 0%, #0a0a12 70%);
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+.app {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+}
+
+#particle-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  text-align: center;
+  pointer-events: none;
+}
+
+.mute-button {
+  position: absolute;
+  top: 1.2rem;
+  right: 1.2rem;
+  pointer-events: auto;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(10, 10, 18, 0.6);
+  color: #fff;
+  font-size: 1.2rem;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.mute-button:hover {
+  transform: translateY(-1px);
+  background: rgba(255, 95, 162, 0.25);
+}
+
+.mute-button.is-muted {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.start-button {
+  pointer-events: auto;
+  background: linear-gradient(135deg, #ff5fa2 0%, #ff8a5c 100%);
+  color: #fff;
+  border: none;
+  border-radius: 999px;
+  padding: 0.9rem 2.6rem;
+  font-size: clamp(1rem, 3vw, 1.4rem);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  box-shadow: 0 10px 30px rgba(255, 95, 162, 0.35);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.start-button:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 15px 35px rgba(255, 95, 162, 0.45);
+}
+
+.start-button:active {
+  transform: translateY(1px) scale(0.98);
+}
+
+.helper {
+  pointer-events: none;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: clamp(0.85rem, 2.5vw, 1rem);
+  max-width: 90vw;
+}
+
+.overlay.is-hidden {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+@media (max-width: 600px) {
+  .start-button {
+    padding: 0.8rem 2rem;
+  }
+
+  .mute-button {
+    top: 0.8rem;
+    right: 0.8rem;
+    width: 40px;
+    height: 40px;
+    font-size: 1rem;
+  }
+}
