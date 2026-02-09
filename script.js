@@ -66,6 +66,21 @@ let hovered = false;
 let mouse = { x: 0, y: 0 };
 let audioReady = false;
 
+const updateMuteButton = (state) => {
+  if (!muteButton) {
+    return;
+  }
+  if (state === "muted") {
+    muteButton.classList.add("is-muted");
+    muteButton.setAttribute("aria-pressed", "true");
+    muteButton.textContent = "🔇";
+  } else {
+    muteButton.classList.remove("is-muted");
+    muteButton.setAttribute("aria-pressed", "false");
+    muteButton.textContent = "🔊";
+  }
+};
+
 const resizeCanvas = () => {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
@@ -301,6 +316,15 @@ const startAnimation = async () => {
   started = true;
   overlay.classList.add("is-hidden");
 
+  if (audio) {
+    try {
+      await audio.play();
+      audioReady = true;
+      updateMuteButton("playing");
+    } catch (error) {
+      audioReady = false;
+      updateMuteButton("muted");
+    }
   try {
     await audio.play();
     audioReady = true;
@@ -319,6 +343,33 @@ const startAnimation = async () => {
 };
 
 startButton.addEventListener("click", startAnimation);
+if (muteButton) {
+  muteButton.addEventListener("click", () => {
+    if (!audio) {
+      return;
+    }
+    if (!audioReady) {
+      audio
+        .play()
+        .then(() => {
+          audioReady = true;
+          updateMuteButton("playing");
+        })
+        .catch(() => {});
+      return;
+    }
+
+    if (audio.paused) {
+      audio.currentTime = 0;
+      audio.play().catch(() => {});
+      updateMuteButton("playing");
+    } else {
+      audio.pause();
+      audio.currentTime = 0;
+      updateMuteButton("muted");
+    }
+  });
+}
 muteButton.addEventListener("click", () => {
   if (!audioReady) {
     audio
