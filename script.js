@@ -41,6 +41,23 @@ const phrases = [
 
 let particles = [];
 let backgroundParticles = [];
+const audio = document.getElementById("bg-audio");
+
+const config = {
+  particleCount: 1200,
+  particleSize: 2.2,
+  colorIdle: "rgba(255,255,255,0.7)",
+  colorActive: "rgba(255, 92, 162, 0.9)",
+  backgroundFade: 0.15,
+  phraseDuration: 4200,
+  transitionDuration: 900,
+  heartColor: "rgba(255, 64, 96, 0.95)",
+};
+
+const phrases = ["Daian", "Quiero decirte", "que esto es", "un demo base"];
+
+let particles = [];
+let targets = [];
 let currentPhraseIndex = 0;
 let animationId = null;
 let phraseTimer = null;
@@ -84,6 +101,14 @@ const getTextTargets = (text) => {
   const tempCtx = tempCanvas.getContext("2d");
   const maxWidth = canvas.width * 0.75;
   const fontSize = Math.min(canvas.width, canvas.height) * 0.14;
+  }));
+};
+
+const getTextTargets = (text) => {
+  const tempCanvas = document.createElement("canvas");
+  const tempCtx = tempCanvas.getContext("2d");
+  const maxWidth = canvas.width * 0.8;
+  const fontSize = Math.min(canvas.width, canvas.height) * 0.16;
 
   tempCanvas.width = canvas.width;
   tempCanvas.height = canvas.height;
@@ -102,6 +127,7 @@ const getTextTargets = (text) => {
   });
 
   return sampleCanvas(tempCtx, tempCanvas.width, tempCanvas.height, 6);
+  return sampleCanvas(tempCtx, tempCanvas.width, tempCanvas.height, 7);
 };
 
 const wrapText = (context, text, maxWidth) => {
@@ -151,6 +177,11 @@ const getHeartTargets = () => {
   scales.forEach((scale) => {
     const size = maxSize * scale;
     for (let t = 0; t < Math.PI * 2; t += 0.022) {
+  const maxSize = Math.min(canvas.width, canvas.height) * 0.28;
+  const minSize = maxSize * 0.45;
+
+  [maxSize, minSize].forEach((size) => {
+    for (let t = 0; t < Math.PI * 2; t += 0.02) {
       const x = size * 16 * Math.pow(Math.sin(t), 3);
       const y =
         -size *
@@ -168,6 +199,9 @@ const getHeartTargets = () => {
 const assignTargets = (newTargets, color) => {
   particles.forEach((particle, index) => {
     const target = newTargets[index % newTargets.length];
+  targets = newTargets;
+  particles.forEach((particle, index) => {
+    const target = targets[index % targets.length];
     particle.tx = target.x;
     particle.ty = target.y;
     particle.color = color;
@@ -202,6 +236,10 @@ const animate = () => {
   });
 
   particles.forEach((particle) => {
+  particles.forEach((particle) => {
+    if (particle.tx === undefined || particle.ty === undefined) {
+      return;
+    }
     const dx = particle.tx - particle.x;
     const dy = particle.ty - particle.y;
     particle.vx += dx * 0.02;
@@ -270,6 +308,10 @@ const startAnimation = async () => {
   } catch (error) {
     audioReady = false;
     muteButton.textContent = "🔇";
+  } catch (error) {
+    setTimeout(() => {
+      audio.play().catch(() => {});
+    }, 3000);
   }
 
   advancePhrase();
