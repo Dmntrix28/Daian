@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Daian - Partículas</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="app">
+      <canvas id="particle-canvas" aria-hidden="true"></canvas>
+      <div class="overlay">
+        <button id="start-button" class="start-button" type="button">
+          INICIAR
+        </button>
+        <p class="helper">
+          Toca el botón para activar el audio y comenzar la animación.
+        </p>
+      </div>
+      <button id="mute-button" class="mute-button" type="button" aria-pressed="false">
+        🔊
+      </button>
+    </main>
+
+    <audio id="bg-audio" preload="auto">
+      <source src="audio/cancion.mp3" type="audio/mpeg" />
+      Tu navegador no soporta audio.
+    </audio>
+
+    <script src="script.js"></script>
+  </body>
+</html>
